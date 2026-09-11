@@ -1,0 +1,852 @@
+<title>B2 特训营</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root{
+  --ink:#181512; --paper:#f5f2ec; --surface:#ffffff; --surface-2:#ece5d6;
+  --accent:#e0532e; --accent-ink:#8f3018; --accent-soft:#fbe1d4;
+  --accent2:#1f3547; --accent2-soft:#dde6ec;
+  --line:#ddd4c2; --ink-soft:#5c5346;
+  --font-d:'Oswald',Impact,'PingFang SC',sans-serif;
+  --font-b:'IBM Plex Sans','PingFang SC','Microsoft YaHei',sans-serif;
+  --font-m:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#f2ede2; --paper:#141210; --surface:#1b1815; --surface-2:#242019;
+    --accent:#ff7a4d; --accent-ink:#ffb391; --accent-soft:#3a2013;
+    --accent2:#8ba9c4; --accent2-soft:#1c2731;
+    --line:#382f24; --ink-soft:#a89b84;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#f2ede2; --paper:#141210; --surface:#1b1815; --surface-2:#242019;
+  --accent:#ff7a4d; --accent-ink:#ffb391; --accent-soft:#3a2013;
+  --accent2:#8ba9c4; --accent2-soft:#1c2731;
+  --line:#382f24; --ink-soft:#a89b84;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-b);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:920px;margin:0 auto;padding:0 20px 100px;}
+a{color:var(--accent2);}
+
+/* nav */
+nav.top{position:sticky;top:0;z-index:30;background:var(--paper);border-bottom:1px solid var(--line);}
+nav.top .inner{max-width:920px;margin:0 auto;padding:10px 20px;display:flex;gap:6px;overflow-x:auto;align-items:center;}
+nav.top .lbl{font-family:var(--font-m);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);margin-right:4px;white-space:nowrap;}
+nav.top a{flex:0 0 auto;font-family:var(--font-m);font-size:12px;color:var(--ink-soft);text-decoration:none;padding:5px 9px;border-radius:6px;border:1px solid var(--line);white-space:nowrap;}
+nav.top a:hover,nav.top a:focus-visible{color:var(--accent-ink);border-color:var(--accent);}
+
+/* masthead */
+header.hero{padding:44px 0 28px;}
+.eyebrow{font-family:var(--font-m);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:0 0 12px;}
+h1{font-family:var(--font-d);font-weight:700;font-size:clamp(38px,6vw,58px);letter-spacing:.01em;line-height:.98;margin:0 0 14px;text-wrap:balance;text-transform:uppercase;}
+.hero p.sub{max-width:60ch;color:var(--ink-soft);font-size:16px;margin:0 0 28px;}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface);}
+.stats .s{padding:14px 16px;border-left:1px solid var(--line);}
+.stats .s:first-child{border-left:none;}
+.stats .s b{display:block;font-family:var(--font-d);font-size:26px;color:var(--accent-ink);font-variant-numeric:tabular-nums;}
+.stats .s span{font-size:11px;color:var(--ink-soft);}
+@media (max-width:600px){.stats{grid-template-columns:repeat(2,1fr);}.stats .s:nth-child(3){border-left:none;}}
+
+section{padding:40px 0;border-top:1px solid var(--line);}
+section:first-of-type{border-top:none;}
+.sec-tag{font-family:var(--font-m);font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;}
+h2{font-family:var(--font-d);font-weight:600;font-size:26px;text-transform:uppercase;margin:4px 0 6px;letter-spacing:.01em;}
+h3{font-family:var(--font-d);font-weight:600;font-size:18px;text-transform:uppercase;margin:26px 0 10px;letter-spacing:.01em;}
+p.note{color:var(--ink-soft);font-size:13.5px;max-width:66ch;margin:0 0 18px;}
+
+/* code table */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface);margin:0 0 20px;}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:13px;}
+th,td{padding:9px 11px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;}
+thead th{background:var(--surface-2);font-family:var(--font-m);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);}
+tbody tr:last-child td{border-bottom:none;}
+td.code{font-family:var(--font-m);font-weight:600;color:var(--accent-ink);white-space:nowrap;}
+.chip{display:inline-block;font-family:var(--font-m);font-size:10.5px;background:var(--surface-2);border:1px solid var(--line);border-radius:5px;padding:2px 6px;margin:2px 3px 2px 0;}
+
+/* week accordion */
+details.week{border:1px solid var(--line);border-radius:12px;margin:0 0 14px;background:var(--surface);overflow:hidden;}
+details.week[open]{border-color:var(--accent);}
+summary.wk-head{cursor:pointer;list-style:none;padding:16px 18px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;}
+summary.wk-head::-webkit-details-marker{display:none;}
+summary.wk-head .wk-n{font-family:var(--font-d);font-size:22px;color:var(--accent-ink);min-width:66px;}
+summary.wk-head .wk-date{font-family:var(--font-m);font-size:11.5px;color:var(--ink-soft);}
+summary.wk-head .wk-title{font-weight:600;flex:1 1 200px;}
+summary.wk-head .wk-arrow{font-family:var(--font-m);color:var(--ink-soft);transition:transform .15s;}
+details.week[open] summary .wk-arrow{transform:rotate(90deg);}
+.wk-meta{padding:0 18px 16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;font-size:12.5px;color:var(--ink-soft);border-bottom:1px solid var(--line);}
+.wk-meta b{color:var(--ink);font-weight:600;display:block;font-size:11px;text-transform:uppercase;letter-spacing:.04em;font-family:var(--font-m);margin-bottom:2px;}
+.cards{padding:16px 18px;display:flex;flex-direction:column;gap:12px;}
+
+/* training card */
+.card{border:1px solid var(--line);border-radius:10px;background:var(--paper);padding:14px 16px;}
+.card-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
+.card-id{font-family:var(--font-m);font-weight:600;color:var(--accent-ink);font-size:14px;}
+.card-time{font-family:var(--font-m);font-size:11.5px;color:var(--ink-soft);}
+.card-goal{font-weight:500;margin:0 0 10px;}
+.card dl{margin:0;display:grid;grid-template-columns:64px 1fr;gap:6px 10px;font-size:13px;}
+.card dt{font-family:var(--font-m);font-size:10.5px;text-transform:uppercase;color:var(--ink-soft);letter-spacing:.03em;padding-top:2px;}
+.card dd{margin:0;}
+.card .check{background:var(--accent-soft);border-radius:6px;padding:8px 10px;margin-top:8px;font-size:12.5px;}
+.card .check b{font-family:var(--font-m);font-size:10.5px;text-transform:uppercase;color:var(--accent-ink);display:block;margin-bottom:3px;}
+
+/* materials lists */
+.mat-list{list-style:none;padding:0;margin:0 0 20px;display:flex;flex-direction:column;gap:8px;}
+.mat-list li{border:1px solid var(--line);border-radius:8px;padding:9px 12px;font-size:13px;background:var(--surface);}
+.mat-list .n{font-family:var(--font-m);color:var(--accent-ink);font-weight:600;margin-right:6px;}
+.vocab{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px;}
+.vocab span{font-family:var(--font-m);font-size:11.5px;background:var(--surface-2);border-radius:5px;padding:3px 8px;}
+
+/* milestone */
+.mile{border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:0 0 16px;background:var(--surface);}
+.mile h4{font-family:var(--font-d);font-size:16px;margin:0 0 8px;text-transform:uppercase;color:var(--accent-ink);}
+.mile dl{display:grid;grid-template-columns:100px 1fr;gap:6px 12px;font-size:13px;margin:0;}
+.mile dt{font-family:var(--font-m);font-size:10.5px;text-transform:uppercase;color:var(--ink-soft);}
+.mile dd{margin:0;}
+
+pre.tmpl{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;font-family:var(--font-m);font-size:12.5px;white-space:pre-wrap;line-height:1.7;}
+
+/* real-material callout */
+.mat-note{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;background:var(--surface);padding:10px 14px;font-size:12.5px;margin:0 0 18px;}
+.mat-note b{color:var(--accent-ink);}
+
+/* checkboxes on cards + gates */
+.cbwrap{display:inline-flex;align-items:center;gap:7px;cursor:pointer;}
+.cbwrap input[type="checkbox"]{width:15px;height:15px;accent-color:var(--accent);cursor:pointer;flex:0 0 auto;}
+.card.done{opacity:.55;}
+.card.done .card-id{text-decoration:line-through;}
+.wk-meta .cbwrap{margin-right:2px;}
+.wk-meta .cbwrap b{font-family:var(--font-m);font-size:11px;text-transform:uppercase;letter-spacing:.04em;}
+.wk-meta .gate-check:checked ~ b{color:var(--accent-ink);}
+
+/* progress bars in hero */
+.progress{display:flex;flex-direction:column;gap:10px;margin-top:14px;}
+.progress .p{display:grid;grid-template-columns:100px 1fr 52px;align-items:center;gap:10px;}
+.progress .plabel{font-family:var(--font-m);font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.03em;}
+.progress .pbar{height:8px;border-radius:5px;background:var(--surface-2);overflow:hidden;border:1px solid var(--line);}
+.progress .pbar i{display:block;height:100%;background:var(--accent);border-radius:5px;transition:width .2s;}
+.progress .pbar.gate i{background:var(--accent2);}
+.progress .pval{font-family:var(--font-m);font-size:12px;text-align:right;color:var(--ink-soft);font-variant-numeric:tabular-nums;}
+
+/* submission flow list */
+ol.flow{list-style:none;counter-reset:flowstep;padding:0;margin:0 0 22px;display:flex;flex-direction:column;gap:10px;}
+ol.flow li{counter-increment:flowstep;position:relative;padding:10px 14px 10px 40px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-size:13.5px;}
+ol.flow li::before{content:counter(flowstep);position:absolute;left:12px;top:10px;font-family:var(--font-d);font-size:14px;color:var(--accent-ink);}
+
+footer{padding:36px 0 10px;color:var(--ink-soft);font-size:11.5px;font-family:var(--font-m);}
+</style>
+
+<nav class="top">
+  <div class="inner">
+    <span class="lbl">跳转</span>
+    <a href="#codes">错误代码</a>
+    <a href="#w1">W1</a><a href="#w2">W2</a><a href="#w3">W3</a><a href="#w4">W4</a>
+    <a href="#w5">W5</a><a href="#w6">W6</a><a href="#w7">W7</a><a href="#w8">W8</a>
+    <a href="#w9">W9</a><a href="#w10">W10</a><a href="#w11">W11</a><a href="#w12">W12</a>
+    <a href="#submit">提交与检测</a><a href="#loops">矫正循环</a><a href="#materials">素材库</a><a href="#milestones">里程碑</a><a href="#tmpl">点评模板</a>
+  </div>
+</nav>
+
+<div class="wrap">
+<header class="hero">
+  <p class="eyebrow">Phase 1 · 2026.09.07 → 2026.11.29 · 12 周</p>
+  <h1>B2 特训营</h1>
+  <p class="sub">学术英语教练手册。9年级，芬兰语学校背景转入EIS全英文环境，缺口不在日常交流，在学术写作、论证与学科词汇。终点检验：11月底 Cambridge B2 First for Schools 全真模考。</p>
+  <div class="stats">
+    <div class="s"><b>12</b><span>训练周</span></div>
+    <div class="s"><b>36</b><span>训练课</span></div>
+    <div class="s"><b>~16h</b><span>每周时长</span></div>
+    <div class="s"><b>12</b><span>错误代码</span></div>
+  </div>
+  <div class="progress" id="progressBar">
+    <div class="p"><span class="plabel">训练课进度</span><div class="pbar"><i id="cardFill" style="width:0%"></i></div><span class="pval" id="cardCount">0/36</span></div>
+    <div class="p"><span class="plabel">周关卡通过</span><div class="pbar gate"><i id="gateFill" style="width:0%"></i></div><span class="pval" id="gateCount">0/12</span></div>
+  </div>
+</header>
+
+<section id="codes">
+  <span class="sec-tag">Section A</span>
+  <h2>错误代码总览</h2>
+  <p class="note">全手册所有训练卡都会引用下面这些代码。第一次遇到某个代码，回来看一眼识别信号再继续。</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>代码</th><th>识别信号</th><th>维度</th><th>首次介入</th></tr></thead>
+      <tbody>
+        <tr><td class="code">T1</td><td>时态混用："Yesterday I go to school and I see my friend." → "Yesterday I went to school and saw my friend."</td><td>Grammar</td><td>W2</td></tr>
+        <tr><td class="code">SVA1</td><td>主谓一致：<em>（W1-1真实数据新增，2026-09诊断）</em> "academic subjects is the basic" → "academic subjects are the basic"</td><td>Grammar</td><td>W2</td></tr>
+        <tr><td class="code">DET1</td><td>限定词/指示词一致：<em>（W1-1真实数据新增）</em> "this two opinions" → "these two opinions"；缺物主限定词"use brain and body" → "use your brain and body"</td><td>Grammar</td><td>观察中，暂不单独排课</td></tr>
+        <tr><td class="code">SYN1</td><td>核心动词/情态动词结构缺失：<em>（W1-1真实数据新增）</em> "if you in a company"（缺be动词）；"you must to X"（must后不能加to）</td><td>Grammar</td><td>观察中，暂不单独排课</td></tr>
+        <tr><td class="code">A1</td><td>冠词误用："I read the book about history."（泛指误用the）→ "I read a book about history."<br><span style="color:var(--ink-soft);font-size:11px;">2026-09诊断：W1-1真实作文里0次出现，已从W2优先级移除，保留代码定义备查</span></td><td>Grammar</td><td>暂缓（无证据）</td></tr>
+        <tr><td class="code">W1</td><td>词性混淆："She is very quick understand it." → "She understands it very quickly."</td><td>Grammar/Vocab</td><td>W2</td></tr>
+        <tr><td class="code">V1</td><td>词汇低阶重复：一篇作文"good"出现5次 → 替换为significant / beneficial / effective</td><td>Vocabulary</td><td>W2</td></tr>
+        <tr><td class="code">S1</td><td>句式单一：全篇简单句 → 混入从句"Although the experiment failed, the data revealed a clear pattern."</td><td>Sentence variety</td><td>W3</td></tr>
+        <tr><td class="code">C1</td><td>连接词单一：全篇只用and/but → 引入however / furthermore / as a result / in contrast</td><td>Cohesion</td><td>W3</td></tr>
+        <tr><td class="code">P1</td><td>段落无主题句：东拉西扯 → 每段第一句明确论点</td><td>Organisation</td><td>W3</td></tr>
+        <tr><td class="code">E1</td><td>论点无证据："Pollution is bad for cities."（无例子）→ 用具体假设场景/个人观察支撑，绝不编造真实数字</td><td>Argumentation</td><td>W3</td></tr>
+        <tr><td class="code">Voc-Sci</td><td>学科词汇缺失：化学作文把"compound"写成"mix thing" → 使用compound / reaction / element</td><td>Subject vocab</td><td>W6</td></tr>
+        <tr><td class="code">R1</td><td>推断题失分：只找字面提及的句子 → 学会找"作者没直说但暗示了什么"</td><td>Reading</td><td>W5</td></tr>
+        <tr><td class="code">L1</td><td>听力细节丢失：数字/专有名词听漏 → 训练"听到立刻写下"的反射</td><td>Listening</td><td>W9</td></tr>
+        <tr><td class="code">Sp1</td><td>口语卡顿：1分钟"um/like"超8次 → 用停顿代替填充词</td><td>Speaking fluency</td><td>W9</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="weeks" style="padding-bottom:0;">
+<span class="sec-tag">Section B + C</span>
+<h2>12周训练营</h2>
+<p class="note">每周展开可见3张训练课卡片，含材料出处、训练步骤、产出物与自查判定。45分钟一块，对应芬兰学校oppitunti节奏。</p>
+<div class="mat-note">
+  <b>关于 Cambridge B2 First for Schools Trainer 2</b>：这是剑桥出版社的真实教材（<a href="https://www.cambridge.org/us/cambridgeenglish/catalog/cambridge-english-exams-ielts/first-schools" target="_blank">Cambridge University Press 官网</a>），需要购买，不是免费下载材料。如果暂时没有这本书，用剑桥官方免费的<a href="https://www.cambridgeenglish.org/exams-and-tests/qualifications/first/preparation/" target="_blank">备考页面</a>和<a href="https://www.cambridgeenglish.org/Images/167792-b2-first-for-schools-handbook.pdf" target="_blank">教师手册PDF</a>（内含真题样卷）替代下面卡片里"Test 1/2/3/4/5"这类具体题号——用手册里对应Part的任意一套真题即可，不必强求题号完全一致。
+</div>
+
+<details class="week" id="w1" open>
+<summary class="wk-head"><span class="wk-n">W1</span><span class="wk-date">09/07–13</span><span class="wk-title">诊断基线</span><span class="wk-arrow">▶</span></summary>
+<div class="wk-meta">
+  <div><b>产出物</b>1篇写作样本+1份口语录音+阅读/听力自测分数</div>
+  <div><label class="cbwrap"><input type="checkbox" class="gate-check" data-id="gate-w1"><b>周末关卡</b></label>完成4项诊断且有书面记录</div>
+  <div><b>AWL</b>—</div>
+</div>
+<div class="cards">
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w1-1"><span class="card-id">W1-1</span></label><span class="card-time">135 min</span></div>
+  <p class="card-goal">产出未经准备的"原始水平"写作与口语样本，作为后续对比基线。不追求写得好，追求真实。</p>
+  <dl><dt>材料</dt><dd>Cambridge B2 First for Schools Trainer 2, Test 1, Writing Part 1, Q4（<code>[题号待核对]</code>）</dd>
+  <dt>步骤</dt><dd>①5min读题不查词典 ②40min限时写作140–190词 ③10min录音口头总结2分钟不准备 ④剩余：原样存档不修改</dd>
+  <dt>产出物</dt><dd>未修改原始作文（标注BASELINE）+ 2分钟录音</dd></dl>
+  <div class="check"><b>自查判定</b>字数140–190；录音≥90秒。批改：暂不批改，留W1-3诊断分析。</div></div>
+
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w1-2"><span class="card-id">W1-2</span></label><span class="card-time">135 min</span></div>
+  <p class="card-goal">测出现在的阅读和听力真实水平，定位薄弱环节。</p>
+  <dl><dt>材料</dt><dd>一篇当天<a href="https://www.bbc.com/news" target="_blank">BBC News</a>真实文章（选文标准与出题方法见E7节）+ TED-Ed视频（检索关键词："TED-Ed how does the immune system work"，4–6min；不保证这个确切标题存在，搜同主题免疫系统短片替代即可）</dd>
+  <dt>步骤</dt><dd>①20min精读该文章+按E7节配方做5道IELTS式理解题(2道True/False/Not Given+2道Sentence Completion+1道Short-answer) ②15min看视频不暂停写5要点 ③10min二刷核对遗漏 ④记录正确率</dd>
+  <dt>产出物</dt><dd>IELTS式阅读自测成绩(5题)+听力要点对比表</dd></dl>
+  <div class="check"><b>自查判定</b>两项都有明确正确率数字。批改：自查，诊断阶段不需标准答案。</div></div>
+
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w1-3"><span class="card-id">W1-3</span></label><span class="card-time">135 min</span></div>
+  <p class="card-goal">把W1-1原始作文和录音逐句标注错误代码，建立个人"错误档案"。</p>
+  <dl><dt>材料</dt><dd>本手册A节 + W1-1存档</dd>
+  <dt>步骤</dt><dd>①30min逐句标注代码 ②20min录音转写标注 ③20min统计频率表 ④确定W2–W4优先攻克的3个高频代码</dd>
+  <dt>产出物</dt><dd>带代码标注的原始作文 + 个人错误频率表</dd></dl>
+  <div class="check"><b>自查判定</b>12个代码逐一过一遍，确定3个优先代码。批改：家长协助标注，大致归类即可。</div></div>
+</div>
+</details>
+
+<details class="week" id="w2">
+<summary class="wk-head"><span class="wk-n">W2</span><span class="wk-date">09/14–20</span><span class="wk-title">语法诊断补漏</span><span class="wk-arrow">▶</span></summary>
+<div class="wk-meta"><div><b>主攻代码</b>T1 / SVA1 / W1<span style="color:var(--ink-soft);"> (原A1，2026-09据W1-1真实诊断替换为SVA1)</span></div><div><b>产出物</b>语法补漏练习册+修正版W1作文</div><div><label class="cbwrap"><input type="checkbox" class="gate-check" data-id="gate-w2"><b>周末关卡</b></label>3类语法错误率≤20%</div><div><b>AWL</b>Sublist 1–2</div></div>
+<div class="cards">
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w2-1"><span class="card-id">W2-1</span></label><span class="card-time">150 min</span></div>
+  <p class="card-goal">把T1（时态混用）在10个句子里的错误率压到20%以下。</p>
+  <dl><dt>材料</dt><dd><a href="https://www.bbc.co.uk/bitesize/topics/ztqnsk7/articles/zb2ttrd" target="_blank">BBC Bitesize："How to use tenses"</a></dd>
+  <dt>步骤</dt><dd>①20min讲解 ②30min单元练习 ③40min自写10句故意混时态 ④30min批改标错 ⑤剩余：错句改写3遍</dd>
+  <dt>产出物</dt><dd>10个原创句子+批改记录+3遍改写</dd></dl>
+  <div class="check"><b>自查判定</b>10句错误≤2句。批改：家长或AI批改后人工复核。</div></div>
+
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w2-2"><span class="card-id">W2-2</span></label><span class="card-time">150 min</span></div>
+  <p class="card-goal">解决SVA1（主谓一致）和W1（词性混淆）专项练习。<span style="color:var(--ink-soft);font-size:11.5px;">（原计划是A1冠词，2026-09按W1-1真实诊断替换——那篇作文里冠词0错误，但主谓一致错了4次）</span></p>
+  <dl><dt>材料</dt><dd><a href="https://www.bbc.co.uk/bitesize/topics/ztqnsk7" target="_blank">BBC Bitesize Grammar</a>里的"What is a verb?"（词性，对应W1）；主谓一致目前BBC Bitesize英语板块没有独立页面，用孩子自己W1-1里的4处真实错句直接当教材（见下方步骤）</dd>
+  <dt>步骤</dt><dd>①25min主谓一致规则讲解：复数主语（subjects/skills/things）配are，不是is ②25min词性规则+练习 ③30min改正W1-1中全部SVA1/W1错误（4处SVA1+1处W1，逐句改写并抄3遍） ④30min AWL Sublist1前15词造句 ⑤口头造句</dd>
+  <dt>产出物</dt><dd>改正版W1-1作文（SVA1/W1清零）+ 15词例句本</dd></dl>
+  <div class="check"><b>自查判定</b>改正版主谓一致/词性错误为0。批改：自查对照本卡步骤①的规则。</div></div>
+
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w2-3"><span class="card-id">W2-3</span></label><span class="card-time">135 min</span></div>
+  <p class="card-goal">完成AWL Sublist 1–2剩余部分，整合本周语法点进短文。</p>
+  <dl><dt>材料</dt><dd>AWL Sublist 1（剩余45词）+ Sublist 2（60词）</dd>
+  <dt>步骤</dt><dd>①40min词卡制作 ②30min写100词短文(主题:EIS的一天)用≥5个本周AWL词 ③30min自查T1/SVA1/W1 ④家长/AI复核</dd>
+  <dt>产出物</dt><dd>Sublist 1–2词卡（约90张）+ 100词短文</dd></dl>
+  <div class="check"><b>自查判定</b>短文T1/SVA1/W1错误合计≤2处；AWL目标词≥5个。批改：自查后请他人复核。</div></div>
+</div>
+</details>
+
+<details class="week" id="w3">
+<summary class="wk-head"><span class="wk-n">W3</span><span class="wk-date">09/21–27</span><span class="wk-title">五段式议论文结构</span><span class="wk-arrow">▶</span></summary>
+<div class="wk-meta"><div><b>主攻代码</b>S1 / C1 / P1</div><div><b>产出物</b>五段式大纲+成文</div><div><label class="cbwrap"><input type="checkbox" class="gate-check" data-id="gate-w3"><b>周末关卡</b></label>5段结构完整，主题句齐全</div><div><b>AWL</b>Sublist 3–4</div></div>
+<div class="cards">
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w3-1"><span class="card-id">W3-1</span></label><span class="card-time">150 min</span></div>
+  <p class="card-goal">吃透五段式议论文骨架，能独立列大纲（为W3-3正式攻克P1/S1做结构铺垫）。</p>
+  <dl><dt>材料</dt><dd>Cambridge B2 First for Schools Writing Part 1 官方范文讲解（<code>[范文页码待核对，用Trainer 2 sample answer部分]</code>）</dd>
+  <dt>步骤</dt><dd>①25min标出引言/论点1-3/结论边界 ②20min总结每部分要点 ③40min针对新题独立列大纲 ④30min家长/AI检查逻辑 ⑤修改至通过</dd>
+  <dt>产出物</dt><dd>范文分析笔记 + 新题五段式大纲</dd></dl>
+  <div class="check"><b>自查判定</b>五部分齐全，每段有主题句和支撑点。批改：家长/AI检查逻辑完整性。</div></div>
+
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w3-2"><span class="card-id">W3-2</span></label><span class="card-time">150 min</span></div>
+  <p class="card-goal">把大纲写成完整作文，练习句式多样性（S1）。</p>
+  <dl><dt>材料</dt><dd>W3-1的大纲</dd>
+  <dt>步骤</dt><dd>①10min复习大纲 ②40min成文180词每段≥1非简单句 ③20min统计简单/复杂句比例 ④30min改写3个简单句 ⑤誊写</dd>
+  <dt>产出物</dt><dd>180词议论文 + 句式改写记录(3处)</dd></dl>
+  <div class="check"><b>自查判定</b>复杂句占比≥40%。批改：自查计数。</div></div>
+
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w3-3"><span class="card-id">W3-3</span></label><span class="card-time">135 min</span></div>
+  <p class="card-goal">攻克C1（连接词单一）和P1（无主题句），完成AWL Sublist 3–4。</p>
+  <dl><dt>材料</dt><dd>AWL Sublist 3–4（120词）+ W3-2作文</dd>
+  <dt>步骤</dt><dd>①30min学连接词分类表(转折/递进/因果/举例各记3个) ②30min替换重复连接词 ③30min检查主题句 ④40min词卡 ⑤整理终稿</dd>
+  <dt>产出物</dt><dd>连接词分类表 + 修订终稿 + Sublist 3–4词卡</dd></dl>
+  <div class="check"><b>自查判定</b>连接词种类≥5且无重复超2次；4段每段主题句明确。批改：自查表格核对。</div></div>
+</div>
+</details>
+
+<details class="week" id="w4">
+<summary class="wk-head"><span class="wk-n">W4</span><span class="wk-date">09/28–10/04</span><span class="wk-title">第一次限时作文</span><span class="wk-arrow">▶</span></summary>
+<div class="wk-meta"><div><b>主攻代码</b>E1（含W2/W3全部）</div><div><b>产出物</b>40min限时作文+反馈单</div><div><label class="cbwrap"><input type="checkbox" class="gate-check" data-id="gate-w4"><b>周末关卡</b></label>四维评分≥14/20</div><div><b>AWL</b>复习1–4</div></div>
+<div class="cards">
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w4-1"><span class="card-id">W4-1</span></label><span class="card-time">150 min</span></div>
+  <p class="card-goal">限时作文题型热身，复习E1（论据支撑）具体做法。</p>
+  <dl><dt>材料</dt><dd>Cambridge B2 First for Schools Trainer 2, Test 2, Writing Part 1（<code>[题号待核对]</code>）</dd>
+  <dt>步骤</dt><dd>①20min学"论点+证据"公式 ②30min分析范文标证据句 ③40min写详细大纲(含每段证据) ④30min家长/AI检查证据具体性 ⑤定稿</dd>
+  <dt>产出物</dt><dd>证据句标注笔记 + 定稿大纲</dd></dl>
+  <div class="check"><b>自查判定</b>每段标注≥1具体证据，非空泛断言。批改：家长/AI检查具体性。</div></div>
+
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w4-2"><span class="card-id">W4-2</span></label><span class="card-time">40+80 min</span></div>
+  <p class="card-goal">Phase 1第一次真正限时作文，重点检验E1在限时压力下是否还能做到。</p>
+  <dl><dt>材料</dt><dd>同W4-1题目</dd>
+  <dt>步骤</dt><dd>①40min严格计时不查词典 ②20min用A节代码表自我标注 ③30min四维rubric自评 ④30min列3个突出错误代码</dd>
+  <dt>产出物</dt><dd>限时作文原稿+自评四维分数+错误标注</dd></dl>
+  <div class="check"><b>自查判定</b>四份材料齐全。批改：提交EIS老师或家长复核，问"按四维打分该打几分？"</div></div>
+
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w4-3"><span class="card-id">W4-3</span></label><span class="card-time">135 min</span></div>
+  <p class="card-goal">拿到反馈后，针对3个突出错误代码专项返工。</p>
+  <dl><dt>材料</dt><dd>W4-2标注+教师/家长反馈</dd>
+  <dt>步骤</dt><dd>①20min确认3个最需修问题 ②60min逐条修改并标注代码 ③30min每类错误写2个新例句 ④更新错误频率表</dd>
+  <dt>产出物</dt><dd>修订版作文+6个新例句+更新频率表</dd></dl>
+  <div class="check"><b>自查判定</b>3个目标错误清零；6例句他人复核正确。批改：家长或AI复核。</div></div>
+</div>
+</details>
+
+<details class="week" id="w5">
+<summary class="wk-head"><span class="wk-n">W5</span><span class="wk-date">10/05–11</span><span class="wk-title">阅读策略</span><span class="wk-arrow">▶</span></summary>
+<div class="wk-meta"><div><b>主攻代码</b>R1</div><div><b>产出物</b>3篇精读笔记+推断正确率</div><div><label class="cbwrap"><input type="checkbox" class="gate-check" data-id="gate-w5"><b>周末关卡</b></label>推断正确率≥60%</div><div><b>AWL</b>Sublist 5–6</div></div>
+<div class="cards">
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w5-1"><span class="card-id">W5-1</span></label><span class="card-time">150 min</span></div>
+  <p class="card-goal">学会skimming/scanning阅读策略，为本周攻克R1（推断题）打基础。</p>
+  <dl><dt>材料</dt><dd>一篇本周新选的<a href="https://www.bbc.com/news" target="_blank">BBC News</a>真实文章，600–900词，Science/Health/Technology/Culture/Sport板块任选一篇（选文标准见E7节，避开War/Politics等争议或情绪化题材）</dd>
+  <dt>步骤</dt><dd>①20min技巧说明 ②20min practice skimming ③20min practice scanning ④30min按E7节配方做5道字面/定位类IELTS题(Short-answer+Sentence Completion) ⑤记录用时/正确率</dd>
+  <dt>产出物</dt><dd>skim/scan练习记录 + 本周文章字面题成绩(5题)</dd></dl>
+  <div class="check"><b>自查判定</b>scanning60秒内找到3个信息；字面题正确率≥80%。批改：自查对照原文。</div></div>
+
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w5-2"><span class="card-id">W5-2</span></label><span class="card-time">150 min</span></div>
+  <p class="card-goal">专攻R1（推断题），用IELTS的True/False/Not Given判断法，学会"字面没说但暗示了什么"。</p>
+  <dl><dt>材料</dt><dd>W5-1同一篇文章 + AWL Sublist 5</dd>
+  <dt>步骤</dt><dd>①25min学习E7节True/False/Not Given与Yes/No/Not Given的精确定义和区别 ②30min针对该文章按配方写5道True/False/Not Given题+写出每题对应的原文依据句 ③40min Sublist5词卡 ④40min用新词写5句该文章主题相关的句子</dd>
+  <dt>产出物</dt><dd>5道True/False/Not Given题+依据句标注 + 词卡 + 5句子</dd></dl>
+  <div class="check"><b>自查判定</b>5题都能标出对应的原文依据句（或说明为何是Not Given）。批改：家长对照E7节定义核对判断是否正确，不是核对"像不像"。</div></div>
+
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w5-3"><span class="card-id">W5-3</span></label><span class="card-time">135 min</span></div>
+  <p class="card-goal">完成AWL Sublist 6，用一篇新文章做限时IELTS式阅读测试，检验R1策略掌握情况。</p>
+  <dl><dt>材料</dt><dd>AWL Sublist 6 + 另一篇新选的BBC News文章（同E7节标准，600–900词） + <a href="https://www.bbc.co.uk/bitesize/topics/zshssrd" target="_blank">BBC Bitesize：Atomic structure</a>（GCSE Combined Science，供本周化学词汇联动）</dd>
+  <dt>步骤</dt><dd>①40min词卡 ②20min限时阅读该新文章，同步完成E7节配方的完整一套题(约8题混合题型) ③20min对照原文核对答案 ④20min统计True/False/Not Given题的正确率 ⑤周末关卡自测</dd>
+  <dt>产出物</dt><dd>Sublist6词卡 + 完整IELTS式套题成绩单</dd></dl>
+  <div class="check"><b>自查判定</b>限时套题整体正确率≥60%，其中True/False/Not Given单项正确率单独记录。批改：自查对照原文，答案有争议处标记待家长复核。</div></div>
+</div>
+</details>
+
+<details class="week" id="w6">
+<summary class="wk-head"><span class="wk-n">W6</span><span class="wk-date">10/12–18</span><span class="wk-title">学科词汇交叉训练</span><span class="wk-arrow">▶</span></summary>
+<div class="wk-meta"><div><b>主攻代码</b>Voc-Sci</div><div><b>产出物</b>化学+历史词卡各20张+跨学科短文</div><div><label class="cbwrap"><input type="checkbox" class="gate-check" data-id="gate-w6"><b>周末关卡</b></label>学科词汇≥8个</div><div><b>AWL</b>复习5–6</div></div>
+<div class="cards">
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w6-1"><span class="card-id">W6-1</span></label><span class="card-time">150 min</span></div>
+  <p class="card-goal">拿下Voc-Sci错误代码——化学高频词的认知与正确使用。</p>
+  <dl><dt>材料</dt><dd>E5化学高频词第1–10个 + <a href="https://www.bbc.co.uk/bitesize/topics/zshssrd" target="_blank">BBC Bitesize：Atomic structure</a></dd>
+  <dt>步骤</dt><dd>①30min学定义发音 ②30min双语词卡 ③40min精读标目标词 ④30min写80词短文用≥5个目标词 ⑤自查</dd>
+  <dt>产出物</dt><dd>10张化学词卡 + 80词化学短文</dd></dl>
+  <div class="check"><b>自查判定</b>短文正确用词≥5个，符合科学含义。批改：EIS化学老师或家长复核准确性。</div></div>
+
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w6-2"><span class="card-id">W6-2</span></label><span class="card-time">150 min</span></div>
+  <p class="card-goal">拿下历史高频词，攻克Voc-Sci在历史学科的表现，完成跨学科短文。</p>
+  <dl><dt>材料</dt><dd>E6历史高频词第1–10个 + <a href="https://www.bbc.co.uk/bitesize/subjects/zk26n39" target="_blank">BBC Bitesize KS3 History："World War One"</a>单元</dd>
+  <dt>步骤</dt><dd>①30min学定义 ②30min词卡 ③40min精读标词 ④30min写80词短文用≥5个目标词 ⑤自查</dd>
+  <dt>产出物</dt><dd>10张历史词卡 + 80词历史短文</dd></dl>
+  <div class="check"><b>自查判定</b>正确用词≥5个。批改：家长/AI复核，或EIS历史老师协助。</div></div>
+
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w6-3"><span class="card-id">W6-3</span></label><span class="card-time">135 min</span></div>
+  <p class="card-goal">整合化学+历史词汇进跨学科作文，完成Voc-Sci本周综合检验。</p>
+  <dl><dt>材料</dt><dd>W6-1、W6-2产出</dd>
+  <dt>步骤</dt><dd>①20min复习20个学科词 ②60min写150词跨学科作文，化学+历史各≥4个 ③30min自查数量 ④归档</dd>
+  <dt>产出物</dt><dd>150词跨学科作文</dd></dl>
+  <div class="check"><b>自查判定</b>学科词汇合计≥8个，Content自评≥3/5。批改：家长复核数量，EIS老师或AI复核准确性。</div></div>
+</div>
+</details>
+
+<details class="week" id="w7">
+<summary class="wk-head"><span class="wk-n">W7</span><span class="wk-date">10/19–25</span><span class="wk-title">期中模考</span><span class="wk-arrow">▶</span></summary>
+<div class="wk-meta"><div><b>主攻</b>R1/L1雏形综合</div><div><b>产出物</b>非正式Reading+Listening成绩单</div><div><label class="cbwrap"><input type="checkbox" class="gate-check" data-id="gate-w7"><b>周末关卡</b></label>合计正确率≥55%</div><div><b>AWL</b>—</div></div>
+<div class="cards">
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w7-1"><span class="card-id">W7-1</span></label><span class="card-time">150 min</span></div>
+  <p class="card-goal">完成Reading非正式模考，摸底真实水平。</p>
+  <dl><dt>材料</dt><dd>Cambridge B2 First for Schools Trainer 2, Test 1, Reading Parts 5–7（<code>[题号待核对]</code>）</dd>
+  <dt>步骤</dt><dd>①5min说明 ②52min计时作答（本手册内部安排，非官方分段时长） ③20min核对答案 ④30min逐题错误归因 ⑤归类到R1</dd>
+  <dt>产出物</dt><dd>Reading成绩单 + 错误归因分析</dd></dl>
+  <div class="check"><b>自查判定</b>完成全部题目并有正确率数字；每错题写原因。批改：自查对照官方答案。</div></div>
+
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w7-2"><span class="card-id">W7-2</span></label><span class="card-time">150 min</span></div>
+  <p class="card-goal">完成Listening非正式模考。</p>
+  <dl><dt>材料</dt><dd>Cambridge B2 First for Schools Trainer 2, Test 1, Listening Parts 1–4（<code>[题号待核对]</code>）</dd>
+  <dt>步骤</dt><dd>①5min说明 ②40min官方时长计时作答 ③20min核对答案 ④30min归类到L1 ⑤55min精听重做错题最多的题型</dd>
+  <dt>产出物</dt><dd>Listening成绩单+归因+精听记录</dd></dl>
+  <div class="check"><b>自查判定</b>两项合计正确率≥55%及格线。批改：自查对照官方答案。</div></div>
+
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w7-3"><span class="card-id">W7-3</span></label><span class="card-time">135 min</span></div>
+  <p class="card-goal">与家长/教师开期中复盘会，产出书面调整方案。</p>
+  <dl><dt>材料</dt><dd>W7-1、W7-2全部成绩</dd>
+  <dt>步骤</dt><dd>①30min整理期中诊断报告(1页) ②45min复盘会议 ③40min调整W8–W10重点 ④写入G节格式"期中版"点评</dd>
+  <dt>产出物</dt><dd>期中诊断报告 + 会议纪要 + 调整备注</dd></dl>
+  <div class="check"><b>自查判定</b>三份材料齐全，会议纪要有明确下一步行动。批改：家长确认会议已发生。</div></div>
+</div>
+</details>
+
+<details class="week" id="w8">
+<summary class="wk-head"><span class="wk-n">W8</span><span class="wk-date">10/26–11/01</span><span class="wk-title">写作连贯性与论证</span><span class="wk-arrow">▶</span></summary>
+<div class="wk-meta"><div><b>主攻代码</b>C1 / P1（进阶）</div><div><b>产出物</b>TOK式论证作文</div><div><label class="cbwrap"><input type="checkbox" class="gate-check" data-id="gate-w8"><b>周末关卡</b></label>连接词≥6种+每段证据</div><div><b>AWL</b>Sublist 7–8</div></div>
+<div class="cards">
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w8-1"><span class="card-id">W8-1</span></label><span class="card-time">150 min</span></div>
+  <p class="card-goal">进阶练习C1、P1，引入"承认反方再反驳"论证结构。</p>
+  <dl><dt>材料</dt><dd>Cambridge B2 First for Schools Trainer 2, Test 3, Writing Part 1（<code>[题号待核对]</code>）</dd>
+  <dt>步骤</dt><dd>①20min学"Although some argue..., evidence shows..."结构 ②30min大纲含至少1段用此结构 ③50min成文180–200词 ④30min自查连接词/主题句 ⑤家长/AI初审</dd>
+  <dt>产出物</dt><dd>180–200词作文（含反方观点+反驳）</dd></dl>
+  <div class="check"><b>自查判定</b>连接词≥6种无重复超2次；至少1处反方+反驳结构。批改：家长/AI核对结构。</div></div>
+
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w8-2"><span class="card-id">W8-2</span></label><span class="card-time">150 min</span></div>
+  <p class="card-goal">完成AWL Sublist 7–8，攻克V1（词汇低阶重复），词汇升级作文。</p>
+  <dl><dt>材料</dt><dd>AWL Sublist 7–8（120词）</dd>
+  <dt>步骤</dt><dd>①60min词卡 ②40min替换≥6处低阶词为AWL高阶词 ③30min自查语义/语法 ④誊写终稿</dd>
+  <dt>产出物</dt><dd>Sublist7–8词卡 + 词汇升级作文终稿</dd></dl>
+  <div class="check"><b>自查判定</b>终稿AWL目标词正确使用≥8个。批改：自查+AI复核语义准确性。</div></div>
+
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w8-3"><span class="card-id">W8-3</span></label><span class="card-time">135 min</span></div>
+  <p class="card-goal">巩固本周C1、E1成果，口语版同题论证，为W9的Sp1打前站。</p>
+  <dl><dt>材料</dt><dd>W8-1题目</dd>
+  <dt>步骤</dt><dd>①20min准备口头提纲 ②5min录音2分钟含反方+反驳 ③20min回听标卡顿/填充词 ④60min薄弱处重录 ⑤归档</dd>
+  <dt>产出物</dt><dd>2分钟录音（至少2版）+ 卡顿次数记录</dd></dl>
+  <div class="check"><b>自查判定</b>第二版卡顿少于第一版；含反方+反驳完整表达。批改：自查回听，家长可抽查。</div></div>
+</div>
+</details>
+
+<details class="week" id="w9">
+<summary class="wk-head"><span class="wk-n">W9</span><span class="wk-date">11/02–08</span><span class="wk-title">听说强化</span><span class="wk-arrow">▶</span></summary>
+<div class="wk-meta"><div><b>主攻代码</b>L1 / Sp1</div><div><b>产出物</b>跟读转述录音+听写填空</div><div><label class="cbwrap"><input type="checkbox" class="gate-check" data-id="gate-w9"><b>周末关卡</b></label>卡顿≤4次/听写≥70%</div><div><b>AWL</b>复习7–8</div></div>
+<div class="cards">
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w9-1"><span class="card-id">W9-1</span></label><span class="card-time">150 min</span></div>
+  <p class="card-goal">攻克L1（听力细节丢失），训练"数字/专有名词立刻记录"反射。</p>
+  <dl><dt>材料</dt><dd>TED-Ed视频（检索："TED-Ed the history of chemistry"或化学/历史同等主题，4–6min）</dd>
+  <dt>步骤</dt><dd>①15min一刷不暂停只记数字/专有名词 ②20min二刷补全笔记 ③30min核对字幕 ④40min截1min片段听写填空(自挖5空) ⑤整理</dd>
+  <dt>产出物</dt><dd>两遍笔记对比 + 1min片段听写填空成绩</dd></dl>
+  <div class="check"><b>自查判定</b>二刷遗漏率低于一刷；听写填空正确率≥70%。批改：自查对照字幕/原片。</div></div>
+
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w9-2"><span class="card-id">W9-2</span></label><span class="card-time">150 min</span></div>
+  <p class="card-goal">攻克Sp1（口语卡顿），练习跟读与复述。</p>
+  <dl><dt>材料</dt><dd>同一TED-Ed视频1min片段 + AWL Sublist 9复习</dd>
+  <dt>步骤</dt><dd>①20min跟读模仿3遍 ②20min不看字幕复述1.5–2min录音 ③20min统计填充词次数 ④40min重录同段 ⑤Sublist9词卡</dd>
+  <dt>产出物</dt><dd>复述录音（≥2版）+ 填充词统计 + 词卡</dd></dl>
+  <div class="check"><b>自查判定</b>3分钟录音填充词≤4次（若录音短于3分钟，按每分钟频率折算判断）。批改：自查回听。</div></div>
+
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w9-3"><span class="card-id">W9-3</span></label><span class="card-time">135 min</span></div>
+  <p class="card-goal">口语话题练习，整合本周听说成果。</p>
+  <dl><dt>材料</dt><dd>E2口语话题第9个</dd>
+  <dt>步骤</dt><dd>①5min准备提纲 ②3min正式发言录音用3个AWL词 ③20min回听标注Sp1 ④60min超标则重录+词卡复习 ⑤归档</dd>
+  <dt>产出物</dt><dd>口语话题终版录音 + Sublist9复习记录</dd></dl>
+  <div class="check"><b>自查判定</b>含全部3个指定AWL词；填充词≤4次/3分钟。批改：家长或AI复核AWL词使用。</div></div>
+</div>
+</details>
+
+<details class="week" id="w10">
+<summary class="wk-head"><span class="wk-n">W10</span><span class="wk-date">11/09–15</span><span class="wk-title">词汇整合与第二次限时作文</span><span class="wk-arrow">▶</span></summary>
+<div class="wk-meta"><div><b>主攻</b>全部代码综合复习</div><div><b>产出物</b>第二次限时作文+词汇小测</div><div><label class="cbwrap"><input type="checkbox" class="gate-check" data-id="gate-w10"><b>周末关卡</b></label>四维≥15/20，AWL≥80%</div><div><b>AWL</b>Sublist 9（60词）+ Sublist 10（30词）</div></div>
+<div class="cards">
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w10-1"><span class="card-id">W10-1</span></label><span class="card-time">150 min</span></div>
+  <p class="card-goal">完成AWL Sublist 9剩余部分与Sublist 10，做滚动自测。</p>
+  <dl><dt>材料</dt><dd>AWL Sublist 9（剩余）+ Sublist 10（30词，AWL最后一个Sublist词量少于其余9个）</dd>
+  <dt>步骤</dt><dd>①50min词卡 ②40min滚动自测Sublist1–8旧词 ③30min标记生疏词 ④重学例句</dd>
+  <dt>产出物</dt><dd>Sublist9–10词卡 + 滚动自测成绩 + 生疏词清单</dd></dl>
+  <div class="check"><b>自查判定</b>滚动自测正确率≥75%（低于此每天加10min复习）。批改：自查。</div></div>
+
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w10-2"><span class="card-id">W10-2</span></label><span class="card-time">40+80 min</span></div>
+  <p class="card-goal">Phase 1第二次限时作文，检验12周进步。</p>
+  <dl><dt>材料</dt><dd>Cambridge B2 First for Schools Trainer 2, Test 4, Writing Part 1（<code>[题号待核对]</code>）</dd>
+  <dt>步骤</dt><dd>①40min计时作答 ②20min四维自评 ③30min与W4-2对比进步 ④30min列仍未解决的代码</dd>
+  <dt>产出物</dt><dd>第二次限时作文+自评+对比表</dd></dl>
+  <div class="check"><b>自查判定</b>四维总分较W4-2提升≥2分。批改：自评后请EIS老师或家长复核。</div></div>
+
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w10-3"><span class="card-id">W10-3</span></label><span class="card-time">135 min</span></div>
+  <p class="card-goal">处理残余问题，为W11正式模考做最后准备。</p>
+  <dl><dt>材料</dt><dd>W10-2对比表 + 全部训练卡自查记录</dd>
+  <dt>步骤</dt><dd>①40min残余代码各1组15min专项练习（若代码超2个，优先高频2个，控制在40min内） ②40min回顾W1–W10周末关卡补做未过项 ③30min制定W11时间管理计划 ④整理最终错误档案</dd>
+  <dt>产出物</dt><dd>专项练习记录 + 关卡完成清单 + W11时间计划</dd></dl>
+  <div class="check"><b>自查判定</b>12个周末关卡中至少10个pass。批改：家长核对清单。</div></div>
+</div>
+</details>
+
+<details class="week" id="w11">
+<summary class="wk-head"><span class="wk-n">W11</span><span class="wk-date">11/16–22</span><span class="wk-title">正式模考</span><span class="wk-arrow">▶</span></summary>
+<div class="wk-meta"><div><b>主攻</b>正式模考</div><div><b>产出物</b>四项全测成绩单</div><div><label class="cbwrap"><input type="checkbox" class="gate-check" data-id="gate-w11"><b>周末关卡</b></label>见Section F通过线</div><div><b>AWL</b>570词滚动复习</div></div>
+<div class="cards">
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w11-1"><span class="card-id">W11-1</span></label><span class="card-time">150 min</span></div>
+  <p class="card-goal">完成Reading and Use of English + Writing两部分。</p>
+  <dl><dt>材料</dt><dd>Cambridge B2 First for Schools Trainer 2, Test 5（<code>[套题编号待核对，用未使用过的官方真题]</code>）</dd>
+  <dt>步骤</dt><dd>官方时长（Reading约75min+Writing约80min，合计约155min，需相应预留时间/分两段完成）连续完成不查词典不暂停，完成后立即封存不看答案</dd>
+  <dt>产出物</dt><dd>Reading and Use of English + Writing完整答卷（未评分）</dd></dl>
+  <div class="check"><b>自查判定</b>官方时长内完成全部题目无跳题。批改：暂不批改，与W11-2一起送审。</div></div>
+
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w11-2"><span class="card-id">W11-2</span></label><span class="card-time">150 min</span></div>
+  <p class="card-goal">完成Listening + Speaking两部分（无搭档时Speaking Part 3改自问自答）。</p>
+  <dl><dt>材料</dt><dd>同套Test 5 Listening + Speaking Part 2/3/4</dd>
+  <dt>步骤</dt><dd>官方时长完成Listening（约40min）；按官方格式完成Speaking四部分录音（Part 3无搭档需注明限制）；封存材料交EIS英语老师或家长评分</dd>
+  <dt>产出物</dt><dd>Listening答卷 + Speaking四部分录音</dd></dl>
+  <div class="check"><b>自查判定</b>四项全部完成材料齐全送审。批改：交EIS英语老师或熟悉B2 First评分标准的成人评分。</div></div>
+
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w11-3"><span class="card-id">W11-3</span></label><span class="card-time">135 min</span></div>
+  <p class="card-goal">拿到评分结果，对照F节分数线判定是否达标。</p>
+  <dl><dt>材料</dt><dd>W11-1、W11-2评分结果</dd>
+  <dt>步骤</dt><dd>①30min记录四项具体得分 ②30min对照F节通过线逐项判定 ③40min识别未达线原因 ④35min制定W12讨论清单</dd>
+  <dt>产出物</dt><dd>模考总评分表 + 达标判定 + W12讨论清单</dd></dl>
+  <div class="check"><b>自查判定</b>判定明确写"达标"或"未达标+原因"。批改：由评分人签字确认。</div></div>
+</div>
+</details>
+
+<details class="week" id="w12">
+<summary class="wk-head"><span class="wk-n">W12</span><span class="wk-date">11/23–29</span><span class="wk-title">模考讲评收官</span><span class="wk-arrow">▶</span></summary>
+<div class="wk-meta"><div><b>主攻</b>收官讲评</div><div><b>产出物</b>讲评笔记+Phase2方案</div><div><label class="cbwrap"><input type="checkbox" class="gate-check" data-id="gate-w12"><b>周末关卡</b></label>复盘会+书面结论</div><div><b>AWL</b>—</div></div>
+<div class="cards">
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w12-1"><span class="card-id">W12-1</span></label><span class="card-time">150 min</span></div>
+  <p class="card-goal">逐项复盘W11模考，找出Phase 2要延续处理的问题。</p>
+  <dl><dt>材料</dt><dd>W11-3总评分表与讨论清单</dd>
+  <dt>步骤</dt><dd>①40min回看Writing标错误代码 ②40min回看Reading错题判断词汇/推断 ③40min回听Speaking标Sp1现状 ④30min逐科（含Listening）汇总已清零/仍需处理</dd>
+  <dt>产出物</dt><dd>W11全科复盘笔记 + 错误代码分类表</dd></dl>
+  <div class="check"><b>自查判定</b>12个代码逐一标注当前状态。批改：自查，家长复核。</div></div>
+
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w12-2"><span class="card-id">W12-2</span></label><span class="card-time">150 min · 与家长/教师共同进行</span></div>
+  <p class="card-goal">召开Phase 1收官会议，产出Phase 2英语维持方案。</p>
+  <dl><dt>材料</dt><dd>G节模板 + 12周周末关卡记录</dd>
+  <dt>步骤</dt><dd>①40min用G节模板回顾12周 ②40min讨论Phase2维持内容(阅读+双周限时作文) ③40min确定每周时间分配 ④30min书面记录</dd>
+  <dt>产出物</dt><dd>Phase1完整回顾 + Phase2英语维持方案书面稿</dd></dl>
+  <div class="check"><b>自查判定</b>12周点评全部补全；Phase2方案具体到"每周做什么/多长时间"。批改：家长/教师共同确认。</div></div>
+
+  <div class="card"><div class="card-head"><label class="cbwrap"><input type="checkbox" class="card-check" data-id="w12-3"><span class="card-id">W12-3</span></label><span class="card-time">135 min</span></div>
+  <p class="card-goal">整理Phase 1全部成果归档，结束攻坚期。</p>
+  <dl><dt>材料</dt><dd>36张训练卡全部产出物</dd>
+  <dt>步骤</dt><dd>①60min按周整理归档 ②40min写300字总结（引用具体数字对比开始/结束差异） ③与学员核对认同</dd>
+  <dt>产出物</dt><dd>Phase1归档文件夹 + 300字进步总结</dd></dl>
+  <div class="check"><b>自查判定</b>归档完整；总结引用≥3个具体数字为证据。批改：家长确认归档完整。</div></div>
+</div>
+</details>
+</section>
+
+<section id="submit">
+  <span class="sec-tag">提交与检测</span>
+  <h2>怎么交、谁来看、怎么知道有没有效</h2>
+  <p class="note">勾选每张卡左上角的复选框只代表"这次训练做完了"，不代表"做对了"——真正的检测分三层，见下方。复选框状态保存在这台设备的浏览器里，换设备/清缓存会重置，不影响手册本身的进度记录（W1-3等卡片里的书面频率表才是权威记录）。</p>
+
+  <h3>提交方式</h3>
+  <ol class="flow">
+    <li><b>存档</b>——每次训练课结束，把"产出物"栏要求的东西（作文照片/扫描、录音文件、词卡照片、成绩单）存进一个按周命名的地方：有云盘就建"B2特训营 / 第1周.../第12周"文件夹；没有的话，家庭群相册按文件名规则发也行——文件名统一写成 <code>卡号_产出物类型</code>，例如 <code>W3-2_作文.jpg</code>、<code>W9-2_录音.m4a</code>。</li>
+    <li><b>打勾</b>——存好之后，回到这个页面把该卡的复选框勾上，页面顶部的"训练课进度"会跟着更新。</li>
+    <li><b>周复盘时集中看</b>——每周日/周一，家长和孩子一起打开这周的文件夹，配合G节"每周教练点评模板"过一遍，而不是每天单独反馈——训练强度已经很高，不需要每天都开一次评审会。</li>
+  </ol>
+
+  <h3>谁看什么</h3>
+  <p class="note">下面这张表把散落在36张卡里的"批改方式"汇总到一起，提交前先看一眼该找谁。</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>产出物类型</th><th>提交去哪</th><th>谁来看</th><th>问对方的具体问题</th></tr></thead>
+      <tbody>
+        <tr><td>语法专项句子/短文（W2类）</td><td>自己批改为主</td><td>孩子自己 + 家长抽查</td><td>——对照BBC Bitesize规则页，自己先圈错误</td></tr>
+        <tr><td>限时作文（W4-2/W10-2/W11）</td><td>存档后当天/次日交出</td><td>EIS英语老师 或 家长</td><td>"这篇按Content/Communicative Achievement/Organisation/Language四个维度，每项该打几分？"</td></tr>
+        <tr><td>学科短文（W6化学/历史）</td><td>存档后交给对应学科</td><td>EIS化学/历史老师 或 家长/AI</td><td>"这几个学科词我用得准确吗，有没有望文生义？"</td></tr>
+        <tr><td>口语录音（W8-3/W9）</td><td>自己回听为主</td><td>孩子自己，家长可抽查1-2条</td><td>——回听时数填充词次数，不需要他人评分</td></tr>
+        <tr><td>模考成绩单（W7/W11）</td><td>正式送审</td><td>EIS英语老师 或 熟悉B2 First评分标准的成人</td><td>"按官方Speaking/Writing标准，这次能打多少分？"</td></tr>
+        <tr><td>AWL词卡/词汇小测</td><td>自查为主</td><td>孩子自己</td><td>——用Quizlet类工具自测正确率</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>三层检测体系</h3>
+  <p class="note">这三层难度依次上升，也依次更可信——只信第一层会高估进步，只看第三层又太晚才发现问题。</p>
+  <div class="mile"><h4>第一层 · 训练课自查（36次）</h4>
+    <dl><dt>做什么</dt><dd>每张卡的"自查判定"，可数可勾选的硬标准</dd>
+    <dt>频率</dt><dd>每次训练课结束当场做</dd>
+    <dt>可信度</dt><dd>低——孩子自己判定，容易宽松</dd></dl>
+  </div>
+  <div class="mile"><h4>第二层 · 周末关卡（12次）</h4>
+    <dl><dt>做什么</dt><dd>B节总览表里每周的pass/fail标准，通常汇总本周多次训练的结果</dd>
+    <dt>频率</dt><dd>每周一次，建议家长在场一起判定</dd>
+    <dt>可信度</dt><dd>中——有家长参与，但标准仍是自报数据</dd></dl>
+  </div>
+  <div class="mile"><h4>第三层 · 里程碑模考（3次：W4/W7/W11）</h4>
+    <dl><dt>做什么</dt><dd>F节的三次客观测试，按Cambridge真实rubric打分</dd>
+    <dt>频率</dt><dd>固定在第4/7/11周</dd>
+    <dt>可信度</dt><dd>高——有外部标准或他人评分，是真正说了算的检测点</dd></dl>
+  </div>
+  <div class="mat-note">
+    <b>怎么用这三层互相校验</b>：如果第一、二层的勾都打满了，但W7或W11的分数没有相应提升，说明自查判定被打得太松——回到A节错误代码表，重新校准"什么算过关"，而不是继续往下走。反过来，如果某几周关卡总是卡住通不过，那第4/7/11周的里程碑目标也要相应下调，不要死磕一个已经不现实的分数线。
+  </div>
+</section>
+
+<section id="loops">
+  <span class="sec-tag">Section D</span>
+  <h2>诊断—矫正循环</h2>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>代码</th><th>诊断动作</th><th>矫正练习</th><th>复测方式</th><th>退出标准</th></tr></thead>
+      <tbody>
+        <tr><td class="code">T1</td><td>逐句检查时态与时间状语一致</td><td>BBC语法专项+造句改写(W2-1)</td><td>每篇新作文统计出现次数</td><td>连续3篇（W4/W8/W10）为0</td></tr>
+        <tr><td class="code">SVA1</td><td>检查复数主语是否配了单数动词</td><td>用W1-1真实错句改写+造句(W2-2)</td><td>每篇新作文统计出现次数</td><td>连续3篇为0</td></tr>
+        <tr><td class="code">A1</td><td>（暂缓——W1-1真实数据0次出现，观察后续作文再决定是否重新排课）</td><td>—</td><td>—</td><td>—</td></tr>
+        <tr><td class="code">DET1</td><td>检查指示词/物主限定词是否与名词单复数一致</td><td>暂未单独排课，随W2-2顺带改正</td><td>每篇新作文统计出现次数</td><td>连续2篇为0，达标后不再单独追踪</td></tr>
+        <tr><td class="code">SYN1</td><td>检查是否缺be动词、情态动词后是否误加to</td><td>暂未单独排课，随W2-2顺带改正</td><td>每篇新作文统计出现次数</td><td>连续2篇为0，达标后不再单独追踪</td></tr>
+        <tr><td class="code">W1</td><td>检查形容词/副词/名词位置</td><td>BBC词性专项(W2-2)</td><td>同上</td><td>连续3篇为0</td></tr>
+        <tr><td class="code">V1</td><td>统计单篇最高频低阶词</td><td>AWL替换练习(W8-2)</td><td>每篇统计重复率</td><td>最高频词汇重复不超3次</td></tr>
+        <tr><td class="code">S1</td><td>统计简单/复杂句比例</td><td>从句改写练习(W3-2)</td><td>每篇统计比例</td><td>复杂句占比≥40%（W8起）</td></tr>
+        <tr><td class="code">C1</td><td>统计连接词种类与重复</td><td>功能分类表+替换(W3-3,W8-1)</td><td>每篇统计</td><td>种类≥6无重复超2次（W8起稳定）</td></tr>
+        <tr><td class="code">P1</td><td>检查每段首句是否主题句</td><td>主题句改写(W3-3)</td><td>每篇逐段检查</td><td>连续2篇段段有主题句</td></tr>
+        <tr><td class="code">E1</td><td>检查论点是否配证据</td><td>论点+证据公式(W4-1)</td><td>每篇逐段检查</td><td>连续2篇每段≥1证据</td></tr>
+        <tr><td class="code">Voc-Sci</td><td>检查学科短文用词准确性</td><td>词卡+跨学科短文(W6全周)</td><td>W6-3与W12复查</td><td>短文正确用词≥5，稳定2次</td></tr>
+        <tr><td class="code">R1</td><td>统计推断题正确率</td><td>skim/scan+推断专项(W5全周,W7检验)</td><td>W7、W11模考</td><td>正确率≥65%（W11数据）</td></tr>
+        <tr><td class="code">L1</td><td>统计听力细节遗漏率</td><td>精听+听写填空(W9-1)</td><td>W7、W11对比</td><td>听写正确率≥75%（W9-1起稳定）</td></tr>
+        <tr><td class="code">Sp1</td><td>统计单位时间填充词次数</td><td>跟读复述+停顿训练(W9-2,W9-3)</td><td>每次口语录音自查</td><td>3分钟填充词≤4次（W9-3起，以W11模考数据复核）</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="materials">
+  <span class="sec-tag">Section E</span>
+  <h2>具体素材清单</h2>
+
+  <h3>E1 · 12个写作题目</h3>
+  <ul class="mat-list">
+    <li><span class="n">1</span>（W1诊断）Some people think schools should focus only on academic subjects, while others believe schools should also teach practical life skills. Write about: (1) academic subjects (2) practical life skills (3) your own idea.</li>
+    <li><span class="n">2</span>（W2）Do you agree that learning a new language is easier for teenagers than for adults? Write about: (1) how the brain learns at different ages (2) motivation and environment (3) your own idea.</li>
+    <li><span class="n">3</span>（W3）Should schools give students more freedom to choose their subjects? Write about: (1) student motivation (2) the risk of gaps in core knowledge (3) your own idea.</li>
+    <li><span class="n">4</span>（W4限时1）Some people believe that homework should be reduced or removed completely. Write about: (1) student wellbeing (2) academic performance (3) your own idea.</li>
+    <li><span class="n">5</span>（W5非正式）What are the advantages and disadvantages of moving to a new country during your teenage years? Write about: (1) adapting to a new culture (2) academic challenges (3) your own idea.</li>
+    <li><span class="n">6</span>（W6跨学科）How do scientific discoveries change the course of history? Write about: (1) a specific scientific discovery (2) its historical impact (3) your own idea.</li>
+    <li><span class="n">7</span>（W8进阶）Some people say that social media does more harm than good for teenagers. Write about: (1) mental health (2) access to information (3) your own idea.</li>
+    <li><span class="n">8</span>（W9可选）Is it better to specialise early in one subject area, or to study a wide range of subjects for as long as possible? Write about: (1) career preparation (2) personal interests (3) your own idea.</li>
+    <li><span class="n">9</span>（W10限时2）Some people think that exams are the best way to measure a student's ability, while others disagree. Write about: (1) fairness (2) stress and pressure (3) your own idea.</li>
+    <li><span class="n">10</span>（W10备用）Should students be allowed to use AI tools like chatbots to help with schoolwork? Write about: (1) learning effectiveness (2) academic honesty (3) your own idea.</li>
+    <li><span class="n">11</span>（W11备用，正式模考用未使用过的官方真题替代）Do you think teenagers today have too much screen time? Write about: (1) physical health (2) social skills (3) your own idea.</li>
+    <li><span class="n">12</span>（W12复盘）Looking back at your first three months at a new school in a new language, what has been the biggest challenge and how did you deal with it? Write about: (1) academic challenges (2) social/emotional challenges (3) your own idea.</li>
+  </ul>
+
+  <h3>E2 · 12个口语话题</h3>
+  <ul class="mat-list">
+    <li><span class="n">1</span>（W1）Describe your new school. 准备0min（诊断不准备）｜发言2min｜不要求AWL词</li>
+    <li><span class="n">2</span>（W2）Talk about a rule at your school that you think is important. 准备2min｜发言1.5min｜必用：require, significant, respond</li>
+    <li><span class="n">3</span>（W3）Do you think students should wear school uniforms? 准备2min｜发言2min｜必用：issue, similar, process</li>
+    <li><span class="n">4</span>（W4）Describe a time when you had to learn something difficult quickly. 准备2min｜发言2min｜必用：approach, achieve, factor</li>
+    <li><span class="n">5</span>（W5）Talk about a book, article, or video that changed how you think about something. 准备3min｜发言2min｜必用：evident, context, indicate</li>
+    <li><span class="n">6</span>（W6）Explain a scientific concept you learned recently to someone who knows nothing about it. 准备3min｜发言2min｜必用：element, reaction, define</li>
+    <li><span class="n">7</span>（W7）What is the most important lesson history can teach us? 准备2min｜发言2min｜必用：significant, perspective, evident</li>
+    <li><span class="n">8</span>（W8）Some people say technology makes life easier, others disagree. What do you think? 准备2min｜发言2.5min｜必用：contribute, complex, obtain</li>
+    <li><span class="n">9</span>（W9核心）Talk about a goal you are working towards this year. 准备2min｜发言3min（模拟正式Speaking时长）｜必用：achieve, maintain, pursue</li>
+    <li><span class="n">10</span>（W10）Do you think it's better to make decisions quickly or take time to think them through? 准备2min｜发言3min｜必用：consequence, alternative, evaluate</li>
+    <li><span class="n">11</span>（W11模考正式，内容以官方套题Part 2为准，此题为备用）Describe a place that is important to you and explain why. 准备1min｜发言1min（对照官方Part 2格式）｜评分按官方rubric，不作AWL硬性要求</li>
+    <li><span class="n">12</span>（W12收官）What advice would you give to another student moving to a new school in a new language? 准备2min｜发言3min｜必用：significant, approach, achieve（复习词）</li>
+  </ul>
+
+  <h3>E3 · 12份听力/视频材料</h3>
+  <ul class="mat-list">
+    <li><span class="n">1</span>（W1）检索："TED-Ed how does the immune system work"｜4–6min｜一刷记要点对比二刷</li>
+    <li><span class="n">2</span>（W2）检索："BBC Learning English 6 Minute English"（任选一期）｜约6min｜跟读模仿</li>
+    <li><span class="n">3</span>（W5）检索："BBC Bitesize Causes of World War One video"｜3–5min｜skim要点</li>
+    <li><span class="n">4</span>（W6化学）检索："TED-Ed history of the periodic table" 或 "TED-Ed what is an atom"｜4–6min｜学科词汇标注</li>
+    <li><span class="n">5</span>（W6历史）检索："TED-Ed causes of World War One"｜4–6min｜学科词汇标注</li>
+    <li><span class="n">6</span>（W7期中模考）Cambridge B2 First for Schools 真题 Listening Parts 1–4（Trainer 2任一套，或用<a href="https://www.cambridgeenglish.org/Images/167792-b2-first-for-schools-handbook.pdf" target="_blank">官方Handbook PDF</a>里的样卷替代）｜官方约40min｜正式模考流程</li>
+    <li><span class="n">7</span>（W9精听）沿用#4/#5同类TED-Ed视频，截取1min片段｜听写填空</li>
+    <li><span class="n">8</span>（W9跟读）沿用同一片段｜1min｜跟读+复述录音</li>
+    <li><span class="n">9</span>（W9备用，可选）检索："BBC Learning English The English We Speak"（任选一期）｜约3min｜习语积累，非必须</li>
+    <li><span class="n">10</span>（W10滚动复习）重听W1或W6曾用视频｜检验记忆留存</li>
+    <li><span class="n">11</span>（W11正式）Cambridge B2 First for Schools 真题 Listening（用一套此前完全没做过的官方真题——<a href="https://www.cambridgeenglish.org/exams-and-tests/qualifications/first/preparation/" target="_blank">官方备考页</a>可查有哪些真题资源）｜官方约40min｜正式模考</li>
+    <li><span class="n">12</span>（W12延伸，可选）检索："TED-Ed"+学员自选主题｜4–6min｜Phase2过渡素材，不计入Phase1考核</li>
+  </ul>
+
+  <h3>E4 · AWL到周分配表</h3>
+  <div class="tbl-wrap">
+    <table><thead><tr><th>周次</th><th>新学Sublist</th><th>词数</th><th>累计</th></tr></thead>
+    <tbody>
+      <tr><td>W2</td><td>Sublist 1–2</td><td class="code">120</td><td class="code">120</td></tr>
+      <tr><td>W3</td><td>Sublist 3–4</td><td class="code">120</td><td class="code">240</td></tr>
+      <tr><td>W5</td><td>Sublist 5–6</td><td class="code">120</td><td class="code">360</td></tr>
+      <tr><td>W8</td><td>Sublist 7–8</td><td class="code">120</td><td class="code">480</td></tr>
+      <tr><td>W10</td><td>Sublist 9（60词）+ Sublist 10（30词）</td><td class="code">90</td><td class="code">570</td></tr>
+      <tr><td>W6/W9/W12</td><td>滚动复习，不新增</td><td>—</td><td>570（巩固）</td></tr>
+    </tbody></table>
+  </div>
+  <p class="note">Sublist确切词表以<a href="https://www.wgtn.ac.nz/lals/resources/academicwordlist" target="_blank">Averil Coxhead官方Academic Word List</a>（<a href="https://www.wgtn.ac.nz/lals/resources/averil-coxheads-word-lists" target="_blank">10个Sublist详情页</a>）为准，本手册未逐词列出570词，避免转录错误。示例词require/significant/process/approach/factor属Sublist 1；achieve实际属Sublist 2，E2口语话题中作为"必用AWL词"仍有效，仅不作为Sublist 1的举例。</p>
+
+  <h3>E5 · 化学学科高频词（40个）</h3>
+  <div class="vocab">
+    <span>atom</span><span>molecule</span><span>element</span><span>compound</span><span>mixture</span><span>reaction</span><span>bond</span><span>ion</span><span>acid</span><span>base</span>
+    <span>pH</span><span>catalyst</span><span>equation</span><span>mass</span><span>volume</span><span>density</span><span>solution</span><span>solute</span><span>solvent</span><span>concentration</span>
+    <span>periodic table</span><span>electron</span><span>proton</span><span>neutron</span><span>nucleus</span><span>isotope</span><span>valence</span><span>oxidation</span><span>reduction</span><span>combustion</span>
+    <span>precipitate</span><span>titration</span><span>mole</span><span>empirical formula</span><span>exothermic</span><span>endothermic</span><span>diffusion</span><span>chromatography</span><span>states of matter</span><span>chemical formula</span>
+  </div>
+
+  <h3>E6 · 历史学科高频词（40个）</h3>
+  <div class="vocab">
+    <span>source</span><span>evidence</span><span>primary source</span><span>secondary source</span><span>causation</span><span>consequence</span><span>continuity</span><span>change</span><span>perspective</span><span>significance</span>
+    <span>bias</span><span>chronology</span><span>empire</span><span>revolution</span><span>treaty</span><span>colonization</span><span>independence</span><span>ideology</span><span>propaganda</span><span>alliance</span>
+    <span>regime</span><span>reform</span><span>civil rights</span><span>industrialization</span><span>migration</span><span>nationalism</span><span>sovereignty</span><span>diplomacy</span><span>monarchy</span><span>republic</span>
+    <span>democracy</span><span>dictatorship</span><span>historiography</span><span>artifact</span><span>timeline</span><span>interpretation</span><span>context</span><span>legacy</span><span>turning point</span><span>conflict</span>
+  </div>
+
+  <h3>E7 · 真实新闻选文 + IELTS式出题标准</h3>
+  <p class="note">W1-2和W5全周用这套标准，把BBC News的真实时事文章变成训练R1（推断题）的材料。新闻会不断更新，下面先给"怎么选、怎么出题"的可重复流程，再用一篇今天真实存在的BBC文章做完整示范。</p>
+
+  <div class="mat-note">
+    <b>选文标准</b>：来源<a href="https://www.bbc.com/news" target="_blank">BBC News</a>，长度600–900词，从 Science / Health / Technology / Culture / Sport 板块里选——<strong>避开 War / Politics / Crime 等争议或情绪化题材</strong>，这不是为了回避现实，是因为这些题材容易带入立场分歧，干扰"这道题该判True还是Not Given"这种纯语言判断。每周选一篇没做过的新文章。
+  </div>
+
+  <h4 style="font-family:var(--font-d);font-size:15px;color:var(--accent-ink);text-transform:uppercase;margin:20px 0 8px;">出题配方（一篇600–900词文章，配8–10题）</h4>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>题型</th><th>数量</th><th>怎么出</th></tr></thead>
+      <tbody>
+        <tr><td>True / False / Not Given</td><td>4–5题</td><td>针对文中的<strong>事实性陈述</strong>各写一句判断题，答案必须能在原文找到对应句子或明确判断"文中没提"</td></tr>
+        <tr><td>Yes / No / Not Given</td><td>0–2题（仅当文章引用了人物的观点/主张时使用）</td><td>针对文中<strong>被引述者的观点</strong>写判断题，不用于纯事实陈述</td></tr>
+        <tr><td>Matching Information</td><td>1–2题</td><td>把"谁说了/做了什么"和人名/机构名配对</td></tr>
+        <tr><td>Sentence / Summary Completion</td><td>2题</td><td>挖空一句原文改写句，要求"用原文中不超过三个词填空"，答案必须是原文出现过的词或数字</td></tr>
+        <tr><td>Short-answer</td><td>1–2题</td><td>问具体数字/名称/地点，答案是原文中一个短语，不超过三个词</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4 style="font-family:var(--font-d);font-size:15px;color:var(--accent-ink);text-transform:uppercase;margin:20px 0 8px;">True/False/Not Given 精确定义（最容易判错的地方）</h4>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>判定</th><th>含义</th></tr></thead>
+      <tbody>
+        <tr><td class="code">TRUE / YES</td><td>这句话的意思和原文一致（可以是同义改写，不要求逐字一样）</td></tr>
+        <tr><td class="code">FALSE / NO</td><td>这句话和原文<strong>直接矛盾</strong>——原文明确说了相反的内容</td></tr>
+        <tr><td class="code">NOT GIVEN</td><td>原文<strong>根本没提到</strong>这件事，没法判断真假——不是"可能对也可能错"，是"文章压根没说"</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">最常见的出题/判题错误：把"原文没提到细节"当成FALSE。判FALSE的前提是原文有一句话在字面上和陈述相反，不是"没找到支持"。拿不准的时候，先问自己："原文有没有哪句话是直接反对这个说法的？"——有，才是FALSE；没有但也没提，是NOT GIVEN。</p>
+
+  <h4 style="font-family:var(--font-d);font-size:15px;color:var(--accent-ink);text-transform:uppercase;margin:20px 0 8px;">出题纪律</h4>
+  <ul class="mat-list" style="list-style:none;">
+    <li>每道题写完，旁边必须标注对应的原文句子（或明确写"NOT GIVEN——原文未提及"），出题人自己先做一遍这道题，能不能不看答案就答对</li>
+    <li>禁止用需要背景知识才能答对的题——所有答案必须在这篇文章文本内部能找到，不能要求"你还需要知道..."</li>
+    <li>Sentence Completion / Short-answer 的答案必须是原文中<strong>实际出现过的词</strong>，不能让学员自己组织语言去猜大概意思对不对</li>
+  </ul>
+
+  <h4 style="font-family:var(--font-d);font-size:15px;color:var(--accent-ink);text-transform:uppercase;margin:20px 0 8px;">完整示范：一篇真实文章 + 10道题</h4>
+  <p class="note">文章来源：<a href="https://www.bbc.com/sport/articles/cwyzx1gxwqlo" target="_blank">"Are women better than men at endurance running?"</a>，BBC Sport，2026年9月刊出，约1050词（略长于配方标准，作为示范可用；正式训练时优先选600–900词的）。</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>#</th><th>题型</th><th>题目</th><th>答案</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td class="code">T/F/NG</td><td>Lazarus Lake said in 2015 that women were not tough enough to complete the Barkley Marathons.</td><td>TRUE（原文直接引用他的话）</td></tr>
+        <tr><td>2</td><td class="code">T/F/NG</td><td>Jasmin Paris was the first woman ever to attempt the Barkley Marathons.</td><td>NOT GIVEN（原文只说她是第一个证明Lake说法错误的人，没提"第一个尝试"）</td></tr>
+        <tr><td>3</td><td class="code">T/F/NG</td><td>In races up to marathon distance, men and women perform at almost the same level.</td><td>FALSE（原文明确说有10–12%的差距）</td></tr>
+        <tr><td>4</td><td class="code">T/F/NG</td><td>The gender performance gap almost disappears in 100-mile races.</td><td>TRUE（原文：gap缩小到0.25%）</td></tr>
+        <tr><td>5</td><td class="code">Y/N/NG</td><td>Professor Andy Jones believes there is already strong scientific proof that women are physiologically better suited to ultra-endurance events.</td><td>NO（他明确说证据"behind"，还在"speculating"）</td></tr>
+        <tr><td>6</td><td class="code">Matching</td><td>Match the person to their view: (a) mental strength/perseverance (b) hormonal fluctuation builds resilience — 选项：Sophie Woods / Renee McGregor</td><td>(a) Sophie Woods (b) Renee McGregor</td></tr>
+        <tr><td>7</td><td class="code">Sentence Completion</td><td>Beyond ___ miles, women have the potential to be faster than men.（不超过一个词）</td><td>195</td></tr>
+        <tr><td>8</td><td class="code">Sentence Completion</td><td>Andy Jones played a key role in Eliud Kipchoge's attempt to run a marathon in under ___.（不超过三个词）</td><td>two hours</td></tr>
+        <tr><td>9</td><td class="code">Short-answer</td><td>According to research by SheRACES, roughly what percentage of ultramarathon starters are women?</td><td>around 20%</td></tr>
+        <tr><td>10</td><td class="code">Short-answer</td><td>Which university is Professor Andy Jones from?</td><td>University of Exeter</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">这10题就是E7配方在真实文章上的完整应用——注意第2题和第5题：第2题看起来"应该是真的"（她确实很厉害），但原文没有直接说她是"第一个尝试者"，所以严格判NOT GIVEN，不能凭常识脑补成TRUE；第5题是Yes/No/Not Given（针对专家观点），不是True/False（针对事实）。每周换新文章时，照这个流程和这十道题的比例分布重新出一套即可。</p>
+</section>
+
+<section id="milestones">
+  <span class="sec-tag">Section F</span>
+  <h2>三次里程碑检验</h2>
+
+  <div class="mile"><h4>W4 · 第一次限时作文</h4>
+    <dl><dt>考试条件</dt><dd>40分钟，不可查词典，安静独立环境</dd>
+    <dt>评分方式</dt><dd>Cambridge B2 Writing四维rubric：Content/Communicative Achievement/Organisation/Language各0–5，满分20</dd>
+    <dt>通过线</dt><dd>总分≥14/20（Phase1中期基准线，非最终标准）</dd>
+    <dt>补救分支</dt><dd>若<14分，W5–W7每周增加1次30min针对性写作微练习，W7期中复盘会重新评估W10目标</dd></dl>
+  </div>
+
+  <div class="mile"><h4>W7 · 期中模考（Reading+Listening）</h4>
+    <dl><dt>考试条件</dt><dd>官方建议时长，连续完成不查词典不暂停</dd>
+    <dt>评分方式</dt><dd>两项正确率合计平均</dd>
+    <dt>通过线</dt><dd>合计正确率≥55%（阶段性及格线）</dd>
+    <dt>补救分支</dt><dd>若<55%，W8–W9每周增加1次30min额外精听/精读，W10-1滚动复习扩大到W1–W7全部材料</dd></dl>
+  </div>
+
+  <div class="mile"><h4>W11 · 正式模考（四项全测）</h4>
+    <dl><dt>考试条件</dt><dd>完全按官方流程时长，四项连续或分两天完成</dd>
+    <dt>评分方式</dt><dd>Writing用四维rubric；Reading/Listening按官方正确率；Speaking用真实标准——Grammar and Vocabulary/Discourse Management/Pronunciation/Interactive Communication各0–5，另有独立Global Achievement印象分（官方由两名考官评分，本手册无法完全复刻）</dd>
+    <dt>通过线</dt><dd>官方成绩用Cambridge English Scale，B2对应160–179分（Grade C约160–172，Grade B约173–179，<code>[具体年份换算细则待核对]</code>）。本手册内部诊断目标（不等同官方分数）：Writing≥15/20，Reading/Listening正确率各≥65%，Speaking四项分析性标准合计≥12/20</dd>
+    <dt>补救分支</dt><dd>任何一项未达标，Phase2保留每周≥1小时该单项专项维持；若Writing和Reading同时未达标，Phase2开局重做简化版诊断</dd></dl>
+  </div>
+</section>
+
+<section id="tmpl">
+  <span class="sec-tag">Section G</span>
+  <h2>每周教练点评模板</h2>
+  <p class="note">每周日或周一使用，家长或学员自己填写，12周共产出12份，W12-2汇总回顾时统一使用。</p>
+  <pre class="tmpl">第__周（__/__–__/__）教练点评
+
+本周做到了什么：
+- 引用卡号：____（例如W3-2）完成情况：____
+- 引用卡号：____ 完成情况：____
+- 引用卡号：____ 完成情况：____
+
+一个红旗（本周最该警惕的退步信号）：
+____________________________________
+
+下周第一条指令：
+打开____（材料出处），____分钟内完成____（具体动作）。</pre>
+</section>
+
+</div>
+<footer><div class="wrap" style="padding:0;border:none;">B2 特训营教练手册 · Phase 1: 2026-09-07 → 2026-11-29 · 经Codex独立审查，6项事实/规范性问题已修复（Writing Part标注、Speaking评分标准、AWL Sublist词量等），26项排期一致性问题记录待办 · 素材链接已逐一核实，标注处见"提交与检测"上方说明 · 2026-09：根据孩子W1-1真实作文诊断，新增SVA1/DET1/SYN1三个错误代码，W2优先级由T1/A1/W1调整为T1/SVA1/W1（A1暂缓，真实数据0次出现）</div></footer>
+
+<script>
+(function(){
+  var KEY = 'b2bootcamp_progress_v1';
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch(e) { state = {}; }
+
+  function save(){
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {}
+  }
+
+  function updateCounts(){
+    var cardBoxes = document.querySelectorAll('.card-check');
+    var gateBoxes = document.querySelectorAll('.gate-check');
+    var cardDone = 0, gateDone = 0;
+    cardBoxes.forEach(function(cb){ if (cb.checked) cardDone++; });
+    gateBoxes.forEach(function(cb){ if (cb.checked) gateDone++; });
+    var cardTotal = cardBoxes.length, gateTotal = gateBoxes.length;
+    var cf = document.getElementById('cardFill'), gf = document.getElementById('gateFill');
+    var cc = document.getElementById('cardCount'), gc = document.getElementById('gateCount');
+    if (cf) cf.style.width = (cardTotal ? (cardDone/cardTotal*100) : 0) + '%';
+    if (gf) gf.style.width = (gateTotal ? (gateDone/gateTotal*100) : 0) + '%';
+    if (cc) cc.textContent = cardDone + '/' + cardTotal;
+    if (gc) gc.textContent = gateDone + '/' + gateTotal;
+  }
+
+  function restore(){
+    document.querySelectorAll('.card-check, .gate-check').forEach(function(cb){
+      var id = cb.getAttribute('data-id');
+      if (state[id]) {
+        cb.checked = true;
+        var card = cb.closest('.card');
+        if (card) card.classList.add('done');
+      }
+    });
+    updateCounts();
+  }
+
+  document.addEventListener('change', function(e){
+    var t = e.target;
+    if (!t.matches('.card-check, .gate-check')) return;
+    var id = t.getAttribute('data-id');
+    state[id] = t.checked;
+    save();
+    var card = t.closest('.card');
+    if (card) card.classList.toggle('done', t.checked);
+    updateCounts();
+  });
+
+  restore();
+})();
+</script>
